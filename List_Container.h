@@ -30,7 +30,9 @@ public:
 
     bool isEmpty() const; //check whether the container is empty
 
-    void push_front(const T &newData);
+    void push_front(const T &x);
+
+    void push_back(const T &x);
 
     //************************declaration of the inner iterator class****************************
     class Iterator {
@@ -145,9 +147,9 @@ list<T>::~list() {
 }
 
 template<class T>
-void list<T>::push_front(const T &newData) {
+void list<T>::push_front(const T &x) {
     Node *newHead = new Node;
-    newHead->data = newData;
+    newHead->data = x;
     newHead->next = head;
     if (tail == NULL) {   //execute only if the list is newly created
         tail = head;
@@ -156,7 +158,20 @@ void list<T>::push_front(const T &newData) {
         head->pre = newHead;
     }
     head = newHead;
+    size++;
+}
 
+template<class T>
+void list<T>::push_back(const T &x) {
+    if (head == NULL){
+        push_front(x);
+    }
+    Node* newTail = new Node;
+    newTail->data = x;
+    newTail->next = NULL;
+    newTail->pre = tail;
+    tail->next = newTail;
+    tail = newTail;
     size++;
 }
 
