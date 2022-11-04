@@ -17,6 +17,7 @@ private:
     };
 
     Node *head;
+    Node *tail;
     int size;
 
 public:
@@ -29,9 +30,7 @@ public:
 
     bool isEmpty() const; //check whether the container is empty
 
-    // Postcondition: A node with newData has been inserted at the
-    //                head of the Linked container.
-    void addHead(const T &newData);
+    void push_front(const T &newData);
 
     //************************declaration of the inner iterator class****************************
     class Iterator {
@@ -39,44 +38,27 @@ public:
     private:
         Node *curr;
 
-        // Postcondition: The iterator has been constructed from ptr.
         Iterator(Node *ptr); //constructor with Node parameter, defined as private
 
     public:
 
-        // Postcondition: The iterator has been constructed.
         Iterator(); //default constructor
 
-        // Precondition: The iterator is positioned at an item.
-        // Postcondition: The iterator has been positioned at
-        // the next item in the Linked object.
         Iterator operator++(int); //post-increment of ++
 
         Iterator operator--(int);
-        /******Reload of --********/
 
-        // Postcondition: A reference to the item the iterator
-        // is positioned at has been returned.
         T &operator*() const;
 
-        // Postcondition: true has been returned if the
-        // iterator is equal to other; otherwise,
-        // false has been returned.
-        bool operator==(const Iterator other) const;
+        bool operator==(Iterator other) const;
 
     };//class Iterator
 
 
-    // Postcondition: An iterator positioned at the head of
-    //                the Linked container has been returned.
     Iterator Begin() const;
 
-    // Postcondition: An iterator positioned just AFTER the
-    //                tail of the Linked container has been
-    //                returned. NOT the position at the tail!
     Iterator End() const;
 
-    /*******new method*********/
     Iterator Tail();
 
 };
@@ -100,7 +82,7 @@ typename list<T>::Iterator list<T>::Iterator::operator++(int) {
     return temp; //return iterator object
 }
 
-/***** implementation of -- *****/
+
 template<class T>
 typename list<T>::Iterator list<T>::Iterator::operator--(int) {
     Iterator temp = *this; //default copy constructor
@@ -147,10 +129,10 @@ typename list<T>::Iterator list<T>::Tail() {
 template<class T>
 list<T>::list() {
     head = NULL; //empty list
+    tail = NULL;
     size = 0;
 }
 
-/**********/
 template<class T>
 list<T>::~list() {
     Node *current = head;
@@ -162,6 +144,21 @@ list<T>::~list() {
     }
 }
 
+template<class T>
+void list<T>::push_front(const T &newData) {
+    Node *newHead = new Node;
+    newHead->data = newData;
+    newHead->next = head;
+    if (tail == NULL) {   //execute only if the list is newly created
+        tail = head;
+    }
+    if (head != NULL) {
+        head->pre = newHead;
+    }
+    head = newHead;
+
+    size++;
+}
 
 template<class T>
 int list<T>::getLength() const {
@@ -172,21 +169,6 @@ int list<T>::getLength() const {
 template<class T>
 bool list<T>::isEmpty() const {
     return size == 0;
-}
-
-
-template<class T>
-void list<T>::addHead(const T &newData) {    //like the "pushfront" method
-    /*********adding "pre" ************/
-    //please implement this
-    Node *newHead = new Node;
-    newHead->data = newData;
-    newHead->next = head;
-    if (head != NULL) {
-        head->pre = newHead;
-    }
-    head = newHead;
-    size++;
 }
 
 
