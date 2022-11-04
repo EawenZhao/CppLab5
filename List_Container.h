@@ -163,11 +163,11 @@ void list<T>::push_front(const T &x) {
 
 template<class T>
 void list<T>::push_back(const T &x) {
-    if (head == NULL){
+    if (head == NULL) {
         push_front(x);
         return;
     }
-    Node* newTail = new Node;
+    Node *newTail = new Node;
     newTail->data = x;
     newTail->next = NULL;
     newTail->pre = tail;
