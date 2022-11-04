@@ -152,7 +152,7 @@ void list<T>::push_front(const T &x) {
     newHead->data = x;
     newHead->next = head;
     if (tail == NULL) {   //execute only if the list is newly created
-        tail = head;
+        tail = newHead;
     }
     if (head != NULL) {
         head->pre = newHead;
@@ -165,6 +165,7 @@ template<class T>
 void list<T>::push_back(const T &x) {
     if (head == NULL){
         push_front(x);
+        return;
     }
     Node* newTail = new Node;
     newTail->data = x;
