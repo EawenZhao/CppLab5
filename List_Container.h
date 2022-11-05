@@ -151,13 +151,16 @@ list<T>::~list() {
 
 template<class T>
 list<T>::list(const list<T> &x) {
+    this->head = NULL;
+    this->tail = NULL;
+    this->size = 0;
+
     Iterator itr_prev(x.head);
-    if (itr_prev.curr->next != NULL) {
+    while (itr_prev.curr->next != NULL) {
         push_back(itr_prev.curr->data);
         itr_prev++;
     }
-    delete x;
-
+    push_back(itr_prev.curr->data);
 }
 //Postcondition: this list has been constructed and initialized to a copy of x
 
