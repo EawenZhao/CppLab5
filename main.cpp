@@ -9,5 +9,6 @@ int main() {
     test.push_front(3);
     test.push_front(2);
     test.push_back(1);
+    list<int> copy = list<int>(test);
     return 0;
 }

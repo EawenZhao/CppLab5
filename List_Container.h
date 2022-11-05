@@ -6,7 +6,6 @@
 #define CPPLAB5_LIST_CONTAINER_H
 
 #include <cstddef>
-#include <cmath>
 
 template<class T>
 class list {
@@ -26,6 +25,8 @@ public:
     list(); //constructor
 
     ~list(); //destructor
+
+    list(const list<T> &x);
 
     int getLength() const; //get the number of elements
 
@@ -77,6 +78,7 @@ template<class T>
 list<T>::Iterator::Iterator(Node *ptr) {
     curr = ptr;
 }
+
 
 template<class T>
 typename list<T>::Iterator list<T>::Iterator::operator++(int) {
@@ -146,6 +148,18 @@ list<T>::~list() {
         delete temp; //release
     }
 }
+
+template<class T>
+list<T>::list(const list<T> &x) {
+    Iterator itr_prev(x.head);
+    if (itr_prev.curr->next != NULL) {
+        push_back(itr_prev.curr->data);
+        itr_prev++;
+    }
+    delete x;
+
+}
+//Postcondition: this list has been constructed and initialized to a copy of x
 
 template<class T>
 void list<T>::push_front(const T &x) {
