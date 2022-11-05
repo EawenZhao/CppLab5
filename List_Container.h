@@ -6,6 +6,7 @@
 #define CPPLAB5_LIST_CONTAINER_H
 
 #include <cstddef>
+#include <cmath>
 
 template<class T>
 class list {
