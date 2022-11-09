@@ -65,6 +65,8 @@ public:
 
     Iterator Tail();
 
+    Iterator Insert(Iterator position, const T &x);
+
 };
 
 
@@ -87,7 +89,6 @@ typename list<T>::Iterator list<T>::Iterator::operator++(int) {
     return temp; //return iterator object
 }
 
-
 template<class T>
 typename list<T>::Iterator list<T>::Iterator::operator--(int) {
     Iterator temp = *this; //default copy constructor
@@ -106,7 +107,7 @@ bool list<T>::Iterator::operator==(const Iterator other) const {
 }
 
 
-//************************implementation of the Begin and End position**************************
+//************************implementation of the methods *************************
 template<class T>
 typename list<T>::Iterator list<T>::Begin() const {
     return Iterator(head); //container class call the private method (constructor) of the Iterator class:
@@ -129,6 +130,24 @@ typename list<T>::Iterator list<T>::Tail() {
     return result;
 }
 
+//Postcondition: x has been inserted in this list in front of the item that position was
+//positioned at before this call. An iterator positioned at x has been returned.
+template<class T>
+typename list<T>::Iterator list<T>::Insert(list::Iterator position, const T &x) {
+    Node *pre_Node = position.curr->pre;
+    Node *new_Node = new Node;
+    new_Node->data = x;
+
+    pre_Node->next = new_Node;
+    new_Node->pre = pre_Node;
+    new_Node->next = position.curr;
+    position.curr->pre = new_Node;
+    size++;
+
+    Iterator new_position = Iterator(new_Node);
+    return new_position;
+}
+
 
 //************************implementation of the linked list class template**************************
 template<class T>
@@ -149,6 +168,7 @@ list<T>::~list() {
     }
 }
 
+//Postcondition: this list has been constructed and initialized to a copy of x
 template<class T>
 list<T>::list(const list<T> &x) {
     this->head = NULL;
@@ -162,13 +182,14 @@ list<T>::list(const list<T> &x) {
     }
     push_back(itr_prev.curr->data);
 }
-//Postcondition: this list has been constructed and initialized to a copy of x
+
 
 template<class T>
 void list<T>::push_front(const T &x) {
     Node *newHead = new Node;
     newHead->data = x;
     newHead->next = head;
+    newHead->pre = NULL;
     if (tail == NULL) {   //execute only if the list is newly created
         tail = newHead;
     }
