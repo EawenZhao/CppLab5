@@ -14,6 +14,7 @@ int main() {
     list<int>::Iterator iterator = test.Begin();
     iterator++;
     iterator++;
+    iterator--;
     test.Insert(iterator,10);
 
     return 0;

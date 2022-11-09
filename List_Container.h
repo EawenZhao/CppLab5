@@ -7,6 +7,9 @@
 
 #include <cstddef>
 
+
+class Iterator;
+
 template<class T>
 class list {
 private:
@@ -18,7 +21,7 @@ private:
 
     Node *head;
     Node *tail;
-    int size;
+    int list_size;
 
 public:
 
@@ -28,13 +31,22 @@ public:
 
     list(const list<T> &x);
 
-    int getLength() const; //get the number of elements
-
-    bool isEmpty() const; //check whether the container is empty
-
     void push_front(const T &x);
 
     void push_back(const T &x);
+
+    void pop_front();
+
+    void pop_back();
+
+    unsigned size() const;
+
+    bool empty() const;
+
+    list<T> &operator=(const list<T> &x);
+
+    void splice(Iterator position, list<T> &x);
+
 
     //************************declaration of the inner iterator class****************************
     class Iterator {
@@ -48,25 +60,31 @@ public:
 
         Iterator(); //default constructor
 
+        Iterator &operator++();
+
         Iterator operator++(int); //post-increment of ++
+
+        Iterator &operator--();
 
         Iterator operator--(int);
 
-        T &operator*() const;
+        T &operator*();
 
-        bool operator==(Iterator other) const;
+        bool operator==(const Iterator &x);
 
     };//class Iterator
 
 
-    Iterator Begin() const;
+    Iterator Begin();
 
-    Iterator End() const;
-
-    Iterator Tail();
+    Iterator End();
 
     Iterator Insert(Iterator position, const T &x);
 
+    void erase(Iterator position);
+
+    void erase(Iterator first, Iterator last);
+    
 };
 
 
@@ -80,7 +98,6 @@ template<class T>
 list<T>::Iterator::Iterator(Node *ptr) {
     curr = ptr;
 }
-
 
 template<class T>
 typename list<T>::Iterator list<T>::Iterator::operator++(int) {
@@ -97,30 +114,26 @@ typename list<T>::Iterator list<T>::Iterator::operator--(int) {
 }
 
 template<class T>
-T &list<T>::Iterator::operator*() const {
+T &list<T>::Iterator::operator*() {
     return curr->data; //return data reference
 }
 
 template<class T>
-bool list<T>::Iterator::operator==(const Iterator other) const {
-    return curr == other.curr;
+bool list<T>::Iterator::operator==(const Iterator &x) {
+    return curr == x.curr;
 }
 
 
 //************************implementation of the methods *************************
 template<class T>
-typename list<T>::Iterator list<T>::Begin() const {
+typename list<T>::Iterator list<T>::Begin() {
     return Iterator(head); //container class call the private method (constructor) of the Iterator class:
     //friend class is required
 }
 
-template<class T>
-typename list<T>::Iterator list<T>::End() const {
-    return Iterator(); //NULL pointer
-}
 
 template<class T>
-typename list<T>::Iterator list<T>::Tail() {
+typename list<T>::Iterator list<T>::End() {
     Iterator temp = head;
     Iterator result = NULL;
     while (temp != NULL) {
@@ -142,7 +155,7 @@ typename list<T>::Iterator list<T>::Insert(list::Iterator position, const T &x) 
     new_Node->pre = pre_Node;
     new_Node->next = position.curr;
     position.curr->pre = new_Node;
-    size++;
+    list_size++;
 
     Iterator new_position = Iterator(new_Node);
     return new_position;
@@ -154,7 +167,7 @@ template<class T>
 list<T>::list() {
     head = NULL; //empty list
     tail = NULL;
-    size = 0;
+    list_size = 0;
 }
 
 template<class T>
@@ -173,7 +186,7 @@ template<class T>
 list<T>::list(const list<T> &x) {
     this->head = NULL;
     this->tail = NULL;
-    this->size = 0;
+    this->list_size = 0;
 
     Iterator itr_prev(x.head);
     while (itr_prev.curr->next != NULL) {
@@ -197,7 +210,7 @@ void list<T>::push_front(const T &x) {
         head->pre = newHead;
     }
     head = newHead;
-    size++;
+    list_size++;
 }
 
 template<class T>
@@ -212,18 +225,17 @@ void list<T>::push_back(const T &x) {
     newTail->pre = tail;
     tail->next = newTail;
     tail = newTail;
-    size++;
+    list_size++;
 }
 
 template<class T>
-int list<T>::getLength() const {
-    return size;
+unsigned list<T>::size() const {
+    return list_size;
 }
 
-
 template<class T>
-bool list<T>::isEmpty() const {
-    return size == 0;
+bool list<T>::empty() const {
+    return list_size == 0;
 }
 
 
