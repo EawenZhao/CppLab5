@@ -232,9 +232,11 @@ template<class T>
 void list<T>::pop_front() {
     if (this->list_size > 1) {
         head = head->next;
+        delete head->pre;  //to avoid memory leak
         head->pre = NULL;
         list_size--;
     } else if(this->list_size == 1){
+        delete head; //to avoid memory leak
         head = NULL;
         tail = NULL;
         list_size--;
@@ -245,7 +247,19 @@ void list<T>::pop_front() {
 
 template<class T>
 void list<T>::pop_back() {
-
+    if (this->list_size > 1){
+        tail = tail->pre;
+        delete tail->next; //to avoid memory leak
+        tail->next = NULL;
+        list_size--;
+    } else if(this->list_size == 1){
+        delete tail;
+        head = NULL;
+        tail = NULL;
+        list_size--;
+    } else{
+        std::cout << "The list is empty now!" <<std::endl;
+    }
 }
 
 template<class T>
