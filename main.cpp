@@ -13,6 +13,12 @@ int main() {
 
     test.pop_front();
     test.pop_front();
+    test.pop_front();
+    test.pop_front();
+    test.pop_front();
+    test.pop_front();
+    test.pop_front();
+
     /*list<int>::Iterator iterator = test.Begin();
     iterator++;
     iterator++;

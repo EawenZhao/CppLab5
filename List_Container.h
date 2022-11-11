@@ -230,9 +230,13 @@ void list<T>::push_back(const T &x) {
 
 template<class T>
 void list<T>::pop_front() {
-    if (this->list_size != 0) {
+    if (this->list_size > 1) {
         head = head->next;
         head->pre = NULL;
+        list_size--;
+    } else if(this->list_size == 1){
+        head = NULL;
+        tail = NULL;
         list_size--;
     } else{
         std::cout << "The list is empty now!" << std::endl;
