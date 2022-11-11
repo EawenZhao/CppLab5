@@ -8,8 +8,6 @@
 #include <cstddef>
 
 
-class Iterator;
-
 template<class T>
 class list {
 private:
@@ -45,7 +43,6 @@ public:
 
     list<T> &operator=(const list<T> &x);
 
-    void splice(Iterator position, list<T> &x);
 
 
     //************************declaration of the inner iterator class****************************
@@ -84,6 +81,8 @@ public:
     void erase(Iterator position);
 
     void erase(Iterator first, Iterator last);
+
+    void splice(Iterator position, list<T> &x);
 
 };
 
@@ -136,7 +135,7 @@ template<class T>
 typename list<T>::Iterator list<T>::End() {
     Iterator temp = head;
     Iterator result = NULL;
-    while (temp != NULL) {
+    while (temp.curr != NULL) {
         result = temp;
         temp++;
     }
@@ -250,12 +249,9 @@ void list<T>::pop_back() {
     if (this->list_size > 1){
         tail = tail->pre;
         delete tail->next; //to avoid memory leak
-        tail->next = NULL;
         list_size--;
     } else if(this->list_size == 1){
         delete tail;
-        head = NULL;
-        tail = NULL;
         list_size--;
     } else{
         std::cout << "The list is empty now!" <<std::endl;
@@ -270,6 +266,28 @@ unsigned list<T>::size() const {
 template<class T>
 bool list<T>::empty() const {
     return list_size == 0;
+}
+
+template<class T>
+void list<T>::erase(Iterator position) {
+    Node* pre_Node = position.curr->pre;
+    Node* after_Node = position.curr->next;
+    pre_Node->next = after_Node;
+    after_Node->pre = pre_Node;
+    delete position.curr;
+    list_size--;
+}
+
+template<class T>
+void list<T>::erase(Iterator first, Iterator last) {
+    Iterator tempctr;
+    for (tempctr = first; tempctr.curr != last.curr->pre ; tempctr++) {
+        Node* pre_Node = tempctr.curr->pre;
+        Node* after_Node = tempctr.curr->next;
+        pre_Node->next = after_Node;
+        after_Node->pre = pre_Node;
+        list_size--;  //No delete
+    }
 }
 
 

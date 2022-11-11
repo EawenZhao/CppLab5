@@ -11,20 +11,12 @@ int main() {
     test.push_back(2);
     test.push_back(1);
 
-    test.pop_back();
-    test.pop_back();
-    test.pop_back();
-    test.pop_back();
-    test.pop_back();
-    test.pop_back();
-    test.pop_back();
 
-    /*list<int>::Iterator iterator = test.Begin();
-    iterator++;
-    iterator++;
-    iterator--;
-    test.Insert(iterator,10);*/
 
+    list<int>::Iterator iterator1 = test.Begin();
+    iterator1++;
+    list<int>::Iterator iterator2 = test.End();
+    test.erase(iterator1, iterator2);
 
 
     return 0;
