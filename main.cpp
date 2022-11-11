@@ -11,11 +11,15 @@ int main() {
     test.push_back(2);
     test.push_back(1);
 
-    list<int>::Iterator iterator = test.Begin();
+    test.pop_front();
+    test.pop_front();
+    /*list<int>::Iterator iterator = test.Begin();
     iterator++;
     iterator++;
     iterator--;
-    test.Insert(iterator,10);
+    test.Insert(iterator,10);*/
+
+
 
     return 0;
 }

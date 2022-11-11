@@ -84,7 +84,7 @@ public:
     void erase(Iterator position);
 
     void erase(Iterator first, Iterator last);
-    
+
 };
 
 
@@ -226,6 +226,22 @@ void list<T>::push_back(const T &x) {
     tail->next = newTail;
     tail = newTail;
     list_size++;
+}
+
+template<class T>
+void list<T>::pop_front() {
+    if (this->list_size != 0) {
+        head = head->next;
+        head->pre = NULL;
+        list_size--;
+    } else{
+        std::cout << "The list is empty now!" << std::endl;
+    }
+}
+
+template<class T>
+void list<T>::pop_back() {
+
 }
 
 template<class T>
