@@ -4,14 +4,13 @@
 using namespace std;
 
 int main() {
-    list<int> mylist;         // two ints with a value of 100
-    mylist.push_back(100);
+    list<int> mylist;
     mylist.push_back(100);
     mylist.push_back (200);
     mylist.push_back (300);
-    mylist.pop_front();
-    mylist.pop_back();
-
+    list<int>::Iterator iterator1 = mylist.Begin();
+    iterator1++;
+    mylist.Insert(iterator1, 50);
 
     /*list<int> newtest = test;
 
