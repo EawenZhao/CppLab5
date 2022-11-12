@@ -277,6 +277,7 @@ void list<T>::pop_front() {
         head = head->next;
         delete head->pre;  //to avoid memory leak
         head->pre = NULL;
+
         list_size--;
     } else if (this->list_size == 1) {
         delete head; //to avoid memory leak
@@ -296,7 +297,7 @@ void list<T>::pop_back() {
         tail->next = NULL;
         list_size--;
     } else if (this->list_size == 1) {
-        delete tail;
+        delete tail;   //to avoid memory leak
         tail = NULL;
         list_size--;
     } else {
