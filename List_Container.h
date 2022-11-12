@@ -44,7 +44,6 @@ public:
     list<T> &operator=(const list<T> &x);
 
 
-
     //************************declaration of the inner iterator class****************************
     class Iterator {
         friend class list<T>; //friend class of the iterator class
@@ -234,27 +233,27 @@ void list<T>::pop_front() {
         delete head->pre;  //to avoid memory leak
         head->pre = NULL;
         list_size--;
-    } else if(this->list_size == 1){
+    } else if (this->list_size == 1) {
         delete head; //to avoid memory leak
         head = NULL;
         tail = NULL;
         list_size--;
-    } else{
+    } else {
         std::cout << "The list is empty now!" << std::endl;
     }
 }
 
 template<class T>
 void list<T>::pop_back() {
-    if (this->list_size > 1){
+    if (this->list_size > 1) {
         tail = tail->pre;
         delete tail->next; //to avoid memory leak
         list_size--;
-    } else if(this->list_size == 1){
+    } else if (this->list_size == 1) {
         delete tail;
         list_size--;
-    } else{
-        std::cout << "The list is empty now!" <<std::endl;
+    } else {
+        std::cout << "The list is empty now!" << std::endl;
     }
 }
 
@@ -270,8 +269,8 @@ bool list<T>::empty() const {
 
 template<class T>
 void list<T>::erase(Iterator position) {
-    Node* pre_Node = position.curr->pre;
-    Node* after_Node = position.curr->next;
+    Node *pre_Node = position.curr->pre;
+    Node *after_Node = position.curr->next;
     pre_Node->next = after_Node;
     after_Node->pre = pre_Node;
     delete position.curr;
@@ -281,13 +280,54 @@ void list<T>::erase(Iterator position) {
 template<class T>
 void list<T>::erase(Iterator first, Iterator last) {
     Iterator tempctr;
-    for (tempctr = first; tempctr.curr != last.curr->pre ; tempctr++) {
-        Node* pre_Node = tempctr.curr->pre;
-        Node* after_Node = tempctr.curr->next;
+    for (tempctr = first; tempctr.curr != last.curr->pre; tempctr++) {
+        Node *pre_Node = tempctr.curr->pre;
+        Node *after_Node = tempctr.curr->next;
         pre_Node->next = after_Node;
         after_Node->pre = pre_Node;
         list_size--;  //No delete
     }
+}
+
+template<class T>
+list<T> &list<T>::operator=(const list<T> &x) {
+    list<T> newList = new list<T>();
+    newList->head = NULL;
+    newList->tail = NULL;
+    newList->list_size = 0;
+
+    Iterator itr_prev(x.head);
+    while (itr_prev.curr->next != NULL) {
+        this->push_back(itr_prev.curr->data);
+        itr_prev++;
+    }
+    this->push_back(itr_prev.curr->data);
+
+    return newList;
+}
+
+template<class T>
+void list<T>::splice(Iterator position, list<T> &x) {
+    if (position.curr->pre != NULL){
+        Node *pre_Node = position.curr->pre;
+        pre_Node->next = x.head;
+        x.head->pre = pre_Node;
+        x.tail->next = position.curr;
+        position.curr->pre = x.tail;
+        this->list_size += x.list_size;
+        x.head = NULL;
+        x.tail = NULL;
+        x.list_size = 0;
+    } else{
+        this->head = x.head;
+        x.tail->next = position.curr;
+        position.curr->pre = x.tail;
+        this->list_size += x.list_size;
+        x.head = NULL;
+        x.tail = NULL;
+        x.list_size = 0;
+    }
+
 }
 
 

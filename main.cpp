@@ -11,12 +11,15 @@ int main() {
     test.push_back(2);
     test.push_back(1);
 
-
+    list<int> newtest = test;
 
     list<int>::Iterator iterator1 = test.Begin();
     iterator1++;
     list<int>::Iterator iterator2 = test.End();
     test.erase(iterator1, iterator2);
+
+    iterator1 = test.Begin();
+    test.splice(iterator1,newtest);
 
 
     return 0;
