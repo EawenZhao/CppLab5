@@ -4,14 +4,16 @@
 using namespace std;
 
 int main() {
-    list<int> test;
-    test.push_back(5);
-    test.push_back(4);
-    test.push_back(3);
-    test.push_back(2);
-    test.push_back(1);
+    list<int> mylist;         // two ints with a value of 100
+    mylist.push_back(100);
+    mylist.push_back(100);
+    mylist.push_back (200);
+    mylist.push_back (300);
+    mylist.pop_front();
+    mylist.pop_back();
 
-    list<int> newtest = test;
+
+    /*list<int> newtest = test;
 
     list<int>::Iterator iterator1 = test.Begin();
     iterator1++;
@@ -19,7 +21,7 @@ int main() {
     test.erase(iterator1, iterator2);
 
     iterator1 = test.Begin();
-    test.splice(iterator1,newtest);
+    test.splice(iterator1,newtest);*/
 
 
     return 0;

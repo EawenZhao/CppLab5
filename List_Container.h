@@ -293,9 +293,11 @@ void list<T>::pop_back() {
     if (this->list_size > 1) {
         tail = tail->pre;
         delete tail->next; //to avoid memory leak
+        tail->next = NULL;
         list_size--;
     } else if (this->list_size == 1) {
         delete tail;
+        tail = NULL;
         list_size--;
     } else {
         std::cout << "The list is empty now!" << std::endl;
