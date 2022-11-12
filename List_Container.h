@@ -128,10 +128,24 @@ list<T>::Iterator::Iterator(Node *ptr) {
 }
 
 template<class T>
+typename list<T>::Iterator &list<T>::Iterator::operator++() {
+    this->curr = curr->next;
+    Iterator temp = this->curr;
+    return temp;
+}
+
+template<class T>
 typename list<T>::Iterator list<T>::Iterator::operator++(int) {
     Iterator temp = *this; //default copy constructor
     this->curr = curr->next;
     return temp; //return iterator object
+}
+
+template<class T>
+typename list<T>::Iterator &list<T>::Iterator::operator--() {
+    this->curr = curr->pre;
+    Iterator temp = this->curr;
+    return temp;
 }
 
 template<class T>
@@ -151,15 +165,6 @@ bool list<T>::Iterator::operator==(const Iterator &x) {
     return curr == x.curr;
 }
 
-template<class T>
-typename list<T>::Iterator &list<T>::Iterator::operator++() {
-    return;
-}
-
-template<class T>
-typename list<T>::Iterator &list<T>::Iterator::operator--() {
-    return;
-}
 
 
 //************************implementation of the methods *************************
