@@ -1,7 +1,7 @@
 //
 // Created by paral on 2022/11/4.
 //
-//                                                           _ooOoo_
+//                                                          _ooOoo_
 //                                                         o8888888o
 //                                                         88" . "88
 //                                                         (| -_- |)
@@ -130,8 +130,7 @@ list<T>::Iterator::Iterator(Node *ptr) {
 template<class T>
 typename list<T>::Iterator &list<T>::Iterator::operator++() {
     this->curr = curr->next;
-    Iterator temp = this->curr;
-    return temp;
+    return *this;
 }
 
 template<class T>
@@ -144,8 +143,7 @@ typename list<T>::Iterator list<T>::Iterator::operator++(int) {
 template<class T>
 typename list<T>::Iterator &list<T>::Iterator::operator--() {
     this->curr = curr->pre;
-    Iterator temp = this->curr;
-    return temp;
+    return *this;
 }
 
 template<class T>
@@ -316,11 +314,17 @@ bool list<T>::empty() const {
 
 template<class T>
 void list<T>::erase(Iterator position) {
-    if (position.curr->pre == NULL){
+    if (position.curr->pre == NULL) {
         head = head->next;
+        delete head->pre;
         head->pre = NULL;
-        list_size--;
-    } else{
+        this->list_size--;
+    } else if (position.curr->next == NULL) {
+        tail = tail->pre;
+        delete tail->next;
+        tail->next = NULL;
+        this->list_size--;
+    } else {
         Node *pre_Node = position.curr->pre;
         Node *after_Node = position.curr->next;
         pre_Node->next = after_Node;
@@ -332,32 +336,24 @@ void list<T>::erase(Iterator position) {
 
 template<class T>
 void list<T>::erase(Iterator first, Iterator last) {
-    Iterator tempctr = first;
-
-    if (first.curr->pre == NULL){
-        first++;
-        head = head->next;
-        head->pre = NULL;
-        list_size--;
-
-    }
-
-    if (first.curr == last.curr->pre) {
-        Node *pre_Node = tempctr.curr->pre;
-        Node *after_Node = tempctr.curr->next;
-        pre_Node->next = after_Node;
-        after_Node->pre = pre_Node;
-        list_size--;  //No delete
-        return;
-    }
-
-    for (; tempctr.curr != last.curr->pre; tempctr++) {
-
-        Node *pre_Node = tempctr.curr->pre;
-        Node *after_Node = tempctr.curr->next;
-        pre_Node->next = after_Node;
-        after_Node->pre = pre_Node;
-        list_size--;  //No delete
+    // REMAKED
+    Iterator tempitr = first.curr;
+    while (tempitr.curr != last.curr) {
+        if (tempitr.curr->pre == NULL) {
+            tempitr++;
+            head = head->next;
+            delete head->pre;
+            head->pre = NULL;
+            this->list_size--;
+        } else {
+            Node *pre_Node = tempitr.curr->pre;
+            Node *after_Node = tempitr.curr->next;
+            pre_Node->next = after_Node;
+            after_Node->pre = pre_Node;
+            tempitr++;
+            //delete tempitr.curr;
+            list_size--;
+        }
     }
 }
 
