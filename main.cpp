@@ -1,28 +1,32 @@
 #include <iostream>
-#include "List_Container.h"
-
+//#include "List_Container.h"
+#include <list>
 using namespace std;
 
 int main() {
-    list<int> mylist;
-    mylist.push_back(100);
-    mylist.push_back (200);
-    mylist.push_back (300);
-    mylist.push_back (400);
-    mylist.push_back (500);
+    list<char> letters;
+    list<char>::iterator itr;
+    itr = letters.begin();  //   tepref
+    letters.insert(itr,'f');
+    letters.insert(itr,'e');
+    itr++;
+    letters.insert(itr,'r');
+    itr++;
+    itr++;
+    letters.insert(itr,'t');
+    letters.insert(itr,'e');
+    letters.erase(letters.begin());
+    itr--;
+    itr--;
+    letters.insert(itr,'p');
+    itr++;
+    letters.insert(itr,'e');
+    itr = letters.end();
+    itr--;
+    letters.insert(itr,'c');
 
-    list<int>::Iterator iterator1 = mylist.Begin();
-    //iterator1++;
-    list<int>::Iterator iterator2 = mylist.End();
-    //iterator2--;
-    mylist.erase(iterator1,iterator2);
-
-
-    /*list<int> newmylist = mylist;
-
-    list<int>::Iterator iterator1 = mylist.Begin();
-    mylist.splice(iterator1,newmylist);*/
-
-
+    for (list<char>::iterator itr = letters.begin(); itr != letters.end() ; itr++) {
+        cout << *itr << endl;
+    }
     return 0;
 }
