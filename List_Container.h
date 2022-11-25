@@ -36,6 +36,7 @@
 #define CPPLAB5_LIST_CONTAINER_H
 
 #include <cstddef>
+#include <iostream>
 
 
 template<class T>
